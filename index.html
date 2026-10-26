@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Skincare Routine</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Skincare">
+<meta name="theme-color" content="#F4EEDF">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap">
+<style>
+/* Layout: phone-first single column — today's checklist on top, full routine reference below. Emerald, cream, black, golden yellow. */
+:root{
+  --bg:#F4EEDF; --surface:#FFFDF7; --line:#E3DAC3; --fg:#1A1A18; --muted:#5E5A50;
+  --emerald:#1E7A59; --deep:#17573F; --ink-green:#0B3B2C; --mint:#E2EEE5;
+  --gold:#E3B32E; --gold-ink:#0B3B2C; --tip-bg:#FAEDBE; --tip-fg:#3D3005; --tip-label:#7A5A00;
+  --renew:#17573F; --renew-ink:#FFFFFF; --clear:#1E7A59; --clear-ink:#FFFFFF;
+  --rebuild:#C9E2CF; --rebuild-ink:#0B3B2C; --polish:#7FB394; --polish-ink:#0B3B2C;
+  --check:#1E7A59; --check-ink:#FFFFFF; --done-fg:#7C776B;
+  --display:'Fraunces', Georgia, 'Times New Roman', serif;
+  --body:'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0D1813; --surface:#14241D; --line:#25392F; --fg:#ECE7D8; --muted:#A8B2A6;
+  --emerald:#4FBF8E; --deep:#2E8A64; --ink-green:#CDE8D6; --mint:#1B3328;
+  --gold:#E3B32E; --gold-ink:#0B2A1F; --tip-bg:#3A3112; --tip-fg:#F3E3A8; --tip-label:#F0C94F;
+  --renew:#2E8A64; --renew-ink:#FFFFFF; --clear:#1E7A59; --clear-ink:#FFFFFF;
+  --rebuild:#C9E2CF; --rebuild-ink:#0B3B2C; --polish:#7FB394; --polish-ink:#0B3B2C;
+  --check:#4FBF8E; --check-ink:#0B2A1F; --done-fg:#7F8A80; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0D1813; --surface:#14241D; --line:#25392F; --fg:#ECE7D8; --muted:#A8B2A6;
+  --emerald:#4FBF8E; --deep:#2E8A64; --ink-green:#CDE8D6; --mint:#1B3328;
+  --gold:#E3B32E; --gold-ink:#0B2A1F; --tip-bg:#3A3112; --tip-fg:#F3E3A8; --tip-label:#F0C94F;
+  --renew:#2E8A64; --renew-ink:#FFFFFF; --clear:#1E7A59; --clear-ink:#FFFFFF;
+  --rebuild:#C9E2CF; --rebuild-ink:#0B3B2C; --polish:#7FB394; --polish-ink:#0B3B2C;
+  --check:#4FBF8E; --check-ink:#0B2A1F; --done-fg:#7F8A80; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--fg); font-family:var(--body); font-size:16px; line-height:1.45;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 120px}
+.wrap{max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:28px}
+h1,h2,h3{font-family:var(--display); font-weight:600; margin:0; text-wrap:balance; color:var(--ink-green)}
+h1{font-size:30px; line-height:1.1}
+h2{font-size:22px}
+h3{font-size:17px}
+.eyebrow{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:500}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--gold); outline-offset:2px}
+
+/* Today header */
+.today{display:flex; flex-direction:column; gap:14px}
+.today-head{display:flex; justify-content:space-between; align-items:flex-end; gap:12px; flex-wrap:wrap}
+.night-pill{display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:999px; font-size:13px; font-weight:700}
+.preview-note{font-size:13px; color:var(--muted)}
+.preview-note button{background:none; border:0; padding:0; color:var(--emerald); text-decoration:underline; cursor:pointer; font-weight:500}
+
+.seg{display:grid; grid-template-columns:1fr 1fr; background:var(--mint); border-radius:14px; padding:4px; gap:4px}
+.seg button{border:0; background:transparent; border-radius:10px; padding:10px 8px; font-weight:700; font-size:15px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:1px; color:var(--ink-green)}
+.seg button small{font-weight:500; font-size:12px; color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+.progress{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums}
+.bar{flex:1; height:6px; background:var(--mint); border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; width:0; background:var(--emerald); transition:width .3s}
+
+.banner{background:var(--mint); border-radius:12px; padding:10px 14px; font-size:14px; color:var(--fg)}
+.banner b{color:var(--ink-green)}
+
+/* Steps */
+.steps{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px}
+.step{position:relative; background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; display:grid; grid-template-columns:32px minmax(0,1fr); gap:12px}
+.step input{position:absolute; opacity:0; width:1px; height:1px}
+.box{width:30px; height:30px; border-radius:9px; border:2px solid var(--emerald); display:flex; align-items:center; justify-content:center; cursor:pointer; background:transparent}
+.box svg{width:18px; height:18px; stroke:var(--check-ink); opacity:0}
+.step input:checked + .box{background:var(--check); border-color:var(--check)}
+.step input:checked + .box svg{opacity:1}
+.step input:focus-visible + .box{outline:3px solid var(--gold); outline-offset:2px}
+.content{display:flex; flex-direction:column; gap:6px; min-width:0}
+.title-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px}
+.name{font-weight:700; font-size:16px; cursor:pointer}
+.purpose{font-size:12px; color:var(--emerald); font-weight:700; white-space:nowrap; text-transform:uppercase; letter-spacing:.06em}
+.how{font-size:14px; color:var(--fg); margin:0}
+.cond{font-size:13px; font-style:italic; color:var(--muted); margin:0}
+.opt{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); border:1px solid var(--line); border-radius:6px; padding:1px 6px; margin-left:6px; vertical-align:2px}
+.tip{background:var(--tip-bg); color:var(--tip-fg); border-radius:8px; padding:6px 10px; font-size:13px}
+.tip b{color:var(--tip-label); margin-right:4px}
+.step.done .name, .step.done .how{color:var(--done-fg)}
+.step.done .name{text-decoration:line-through; text-decoration-thickness:1.5px}
+
+/* Timer */
+.timer{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); font-variant-numeric:tabular-nums; flex-wrap:wrap}
+.timer svg{width:16px; height:16px; stroke:currentColor; flex:none}
+.timer .ring{flex:1; min-width:80px; height:6px; background:var(--mint); border-radius:99px; overflow:hidden}
+.timer .ring i{display:block; height:100%; width:0; background:var(--gold)}
+.timer.running{color:var(--ink-green); font-weight:700}
+.timer.finished{color:var(--emerald); font-weight:700}
+.timer button{border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:4px 10px; font-size:13px; cursor:pointer; min-height:32px}
+
+/* Floating timer */
+.float{position:fixed; left:0; right:0; bottom:0; z-index:20; padding:10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background:var(--gold); color:var(--gold-ink)}
+.float-in{max-width:720px; margin:0 auto; display:flex; align-items:center; gap:12px; font-weight:700}
+.float-in .t{font-family:var(--display); font-size:24px; font-variant-numeric:tabular-nums}
+.float-in .lbl{flex:1; min-width:0; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.float-in button{border:2px solid var(--gold-ink); background:transparent; color:var(--gold-ink); border-radius:10px; padding:6px 12px; font-weight:700; cursor:pointer}
+
+.resetbtn{align-self:flex-start; background:none; border:1px solid var(--line); border-radius:10px; padding:8px 14px; font-size:14px; cursor:pointer; color:var(--muted)}
+
+/* Full routine */
+.full{display:flex; flex-direction:column; gap:18px; border-top:1px solid var(--line); padding-top:26px}
+.week{display:grid; grid-template-columns:repeat(7, minmax(0,1fr)); gap:6px}
+.day{border:0; border-radius:10px; padding:10px 4px; display:flex; flex-direction:column; align-items:center; gap:2px; cursor:pointer; min-height:64px}
+.day b{font-size:12px; letter-spacing:.08em}
+.day span{font-family:var(--display); font-size:14px; font-weight:600}
+.day.sel{outline:3px solid var(--gold); outline-offset:2px}
+.renew{background:var(--renew); color:var(--renew-ink)}
+.clear{background:var(--clear); color:var(--clear-ink)}
+.rebuild{background:var(--rebuild); color:var(--rebuild-ink)}
+.polish{background:var(--polish); color:var(--polish-ink)}
+.am-head{background:var(--gold); color:var(--gold-ink)}
+.week-note{font-size:13px; color:var(--muted); margin:0}
+
+.cards{display:grid; grid-template-columns:1fr; gap:12px}
+@media (min-width:640px){ .cards{grid-template-columns:1fr 1fr} }
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; overflow:hidden; display:flex; flex-direction:column}
+.card-head{padding:10px 14px; display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+.card-head h3{color:inherit}
+.card-head small{font-size:12px; font-weight:700}
+.card p.blurb{margin:0; padding:10px 14px 0; font-size:13px; color:var(--muted)}
+.card ol{margin:0; padding:8px 14px 14px 34px; font-size:14px; display:flex; flex-direction:column; gap:3px}
+.card ol .cond{display:inline; font-size:13px}
+.card.wide{grid-column:1 / -1}
+.monthly ul{margin:0; padding:8px 14px 14px 32px; font-size:14px; display:flex; flex-direction:column; gap:4px}
+
+@media (prefers-reduced-motion: reduce){ .bar i{transition:none} }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <section class="today" aria-labelledby="todayTitle">
+    <div class="today-head">
+      <div>
+        <div class="eyebrow" id="dateLine">Today</div>
+        <h1 id="todayTitle">Skincare Routine</h1>
+      </div>
+      <span class="night-pill" id="nightPill">Tret night · Renew</span>
+    </div>
+    <div class="preview-note" id="previewNote" hidden></div>
+
+    <div class="seg" role="group" aria-label="Choose routine">
+      <button id="tabAm" type="button" aria-pressed="true">Morning<small id="amCount">0 of 0</small></button>
+      <button id="tabPm" type="button" aria-pressed="false">Night<small id="pmCount">0 of 0</small></button>
+    </div>
+
+    <div class="progress"><div class="bar"><i id="barFill"></i></div><span id="progressText">0 of 0 done</span></div>
+    <div class="banner" id="banner"></div>
+    <ol class="steps" id="steps"></ol>
+    <div style="display:flex; gap:10px; flex-wrap:wrap">
+      <button class="resetbtn" id="testChime" type="button">Test chime</button>
+      <button class="resetbtn" id="resetBtn" type="button">Clear checks for this routine</button>
+    </div>
+  </section>
+
+  <section class="full" aria-labelledby="fullTitle">
+    <div>
+      <div class="eyebrow">Reference</div>
+      <h2 id="fullTitle">Full routine</h2>
+    </div>
+    <div class="week" id="week"></div>
+    <p class="week-note">Tap a day to load its routine at the top. 3 Tret · 1 BHA · 2 Recover · 1 Reset each week.</p>
+    <div class="cards" id="cards"></div>
+  </section>
+</div>
+
+<div class="float" id="float" hidden>
+  <div class="float-in">
+    <span class="t" id="floatTime">0:00</span>
+    <span class="lbl" id="floatLabel"></span>
+    <button type="button" id="floatStop">Stop</button>
+  </div>
+</div>
+
+<script>
+(function(){
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const SHORT=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+const NIGHT_BY_DOW=['reset','tret','recover','bha','tret','recover','tret'];
+const META={
+  tret:{name:'Tret night',purpose:'Renew',cls:'renew',blurb:'Tretinoin speeds cell turnover to smooth lines and pores.'},
+  bha:{name:'BHA night',purpose:'Clear',cls:'clear',blurb:'Salicylic acid dissolves oil inside pores to flatten filaments. Night keeps it apart from vitamin C.'},
+  recover:{name:'Recover night',purpose:'Rebuild',cls:'rebuild',blurb:'No actives. Restores moisture and the skin barrier.'},
+  reset:{name:'Reset night',purpose:'Polish',cls:'polish',blurb:'Weekly scrub and mask to lift dull surface skin.'}
+};
+
+const S={
+  splash:{name:'Lukewarm water splash',purpose:'Cleanse',how:'Splash 5–6 times. Pat completely dry with a clean towel; vitamin C goes on dry skin.'},
+  toner_am:{name:'Vinopure toner',purpose:'Clear',optional:true,how:'Saturate a cotton pad and swipe your nose only. Don’t rinse. Let it dry a minute before vitamin C.',cond:'Only if filaments flare and skin isn’t dry'},
+  vitc:{name:'SkinCeuticals vitamin C',purpose:'Protect',how:'4–5 drops into your palm. Press over face and neck; don’t rub.',tip:'Wait 60 seconds so it absorbs before the next layer.',timer:60,timerLabel:'Vitamin C absorbing'},
+  tor_am:{name:'Torriden hyaluronic acid',purpose:'Hydrate',how:'2–3 drops. Pat in until slightly tacky.',tip:'Mist your face or press wet fingertips over it first. Hyaluronic acid needs damp skin, then seal with cream within a minute or two.'},
+  res_am:{name:'Caudalie Resveratrol-Lift serum',purpose:'Firm',how:'1 pump. Press in, then smooth upward and outward, down onto the neck.'},
+  vichy:{name:'Vichy eye serum',purpose:'Firm · eyes',how:'Rice-grain amount per eye. Tap with your ring finger along the orbital bone, inner to outer corner.'},
+  heve:{name:'Heveblue centella cream',purpose:'Seal',how:'Nickel-size amount. Smooth on in upward, outward strokes.'},
+  lrp:{name:'La Roche-Posay UV Mune',purpose:'SPF',how:'Two finger-lengths for the face. Spread evenly to the hairline and jaw. Let it set 1–2 minutes before makeup.'},
+  striv:{name:'StriVectin neck cream SPF',purpose:'Neck · SPF',how:'Flat palms, smoothing upward from collarbone to jaw.'},
+
+  oil:{name:'Sulwhasoo cleansing oil',purpose:'Cleanse',how:'Dry hands, dry face. Massage 2 pumps in small circles. Add a splash of water until it turns milky, then rinse.',tip:'Spend the 60 seconds on your nose and chin to loosen sebaceous filaments.',timer:60,timerLabel:'Oil massage'},
+  foam:{name:'Apivita cleansing foam',purpose:'Cleanse',how:'Lather in wet palms, wash 30 seconds, rinse with lukewarm water. Pat dry; don’t rub.'},
+  waitdry:{name:'Let skin dry fully',purpose:'Prep',how:'Pat dry, then wait. Damp skin absorbs tretinoin faster and stings more.',tip:'No Torriden tonight.',timer:600,timerLabel:'Drying before tretinoin'},
+  shis_first:{name:'Shiseido Benefiance eye cream',purpose:'Shield',how:'Rice-grain amount per eye. Tap along the orbital bone with your ring finger.',tip:'Goes on first tonight to shield the eye area from tretinoin.'},
+  tret:{name:'Tretinoin',purpose:'Renew',how:'Pea-size total. Dot on forehead, each cheek and chin, then spread thinly. Keep away from the corners of your nose, mouth and eyes.'},
+  heve_tret:{name:'Heveblue centella cream',purpose:'Seal',how:'Smooth over the tretinoin in gentle upward strokes.',tip:'Wait 15 minutes before the last layer so the tretinoin isn’t sealed in too hard.',timer:900,timerLabel:'Waiting before balm or oil'},
+  olay:{name:'Olay Regenerist neck cream',purpose:'Neck',how:'Flat palms, smoothing upward from collarbone to jaw.'},
+  tret_final:{name:'Le Balm or prickly pear oil',purpose:'Seal',how:'Le Balm: warm a small amount between your fingertips and press onto dry patches. Oil: 2–3 drops warmed in your palms, pressed on.',cond:'Le Balm on dry patches only for the first week or two; full face once there’s no stinging'},
+  vino:{name:'Vinopure salicylic serum',purpose:'Clear',how:'3–4 drops on dry skin. Press in, avoiding the eye area.',tip:'Using the toner instead? One or the other, never both. Let it absorb 2 minutes.',timer:120,timerLabel:'Salicylic absorbing'},
+  tor_pm:{name:'Torriden hyaluronic acid',purpose:'Hydrate',how:'Mist or splash first. 2–3 drops, patted in.'},
+  res_pm:{name:'Caudalie Resveratrol-Lift serum',purpose:'Firm',how:'1 pump. Press in, then smooth upward onto the neck.'},
+  res_night:{name:'Resveratrol-Lift night cream',purpose:'Firm',how:'Almond-size amount. Smooth upward and outward, down onto the neck.'},
+  shis:{name:'Shiseido Benefiance eye cream',purpose:'Eyes',how:'Rice-grain amount per eye. Tap along the orbital bone with your ring finger.'},
+  pp:{name:'Prickly pear oil',purpose:'Seal',how:'2–3 drops. Always the last step.',tip:'Warm between your palms, then press onto your face. Don’t rub.'},
+  pp_bha:{name:'Prickly pear oil',purpose:'Seal',optional:true,how:'1–2 drops, warmed in palms and pressed on.',cond:'Only if skin feels tight after the salicylic'},
+  pp_rec:{name:'Prickly pear oil',purpose:'Seal',how:'2–3 drops. Always the last step.',tip:'Warm between your palms, then press onto your face. Don’t rub.',cond:'Very dry? Use a thick layer of Le Balm instead, as an overnight mask'},
+  gom:{name:'Crème Gommante Douce',purpose:'Polish',how:'On damp skin. Light circles with your fingertips, focusing on nose, forehead and chin. Rinse with lukewarm water.',cond:'Skip if skin feels irritated or tight',timer:30,timerLabel:'Gentle buffing'},
+  mask:{name:'Instant Detox mask',purpose:'Polish',how:'Thin, even layer; avoid eyes and lips. Rinse with lukewarm water.',tip:'Rinse before the clay cracks, or at 5 minutes if skin feels tight.',timer:600,timerLabel:'Mask on'}
+};
+
+function amSteps(dow){
+  const torDay=[0,1,3,5].includes(dow);
+  const list=[S.splash];
+  if(dow===2||dow===5) list.push(S.toner_am);
+  list.push(S.vitc);
+  if(torDay){ list.push(S.tor_am, Object.assign({},S.res_am,{optional:true,cond:'Dry day? Add this too'})); }
+  else { list.push(Object.assign({},S.tor_am,{optional:true,cond:'Dry day? Add this too'}), S.res_am); }
+  list.push(S.vichy,S.heve,S.lrp,S.striv);
+  return list;
+}
+function pmSteps(type){
+  if(type==='tret') return [S.oil,S.waitdry,S.shis_first,S.tret,S.heve_tret,S.olay,S.tret_final];
+  if(type==='bha') return [S.oil,S.foam,S.vino,S.tor_pm,S.res_night,S.shis,S.olay,S.pp_bha];
+  if(type==='recover') return [Object.assign({},S.oil,{how:S.oil.how+' Oil cleanse only tonight.'}),S.tor_pm,S.res_pm,S.res_night,S.shis,S.olay,S.pp_rec];
+  return [S.oil,S.foam,S.gom,S.mask,S.tor_pm,S.res_pm,S.res_night,S.shis,S.olay,S.pp];
+}
+
+const now=new Date();
+const todayDow=now.getDay();
+const dateKey=now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDate();
+let dow=todayDow;
+let tab=now.getHours()<14?'am':'pm';
+let checked=new Set();
+const timers={};
+
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function storeKey(t){return 'skincare:'+dateKey+':'+dow+':'+t;}
+function load(t){try{const v=localStorage.getItem(storeKey(t));return new Set(v?JSON.parse(v):[]);}catch(e){return new Set();}}
+function save(){try{localStorage.setItem(storeKey(tab),JSON.stringify([...checked]));}catch(e){}}
+function fmt(s){s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+
+const CHECK='<svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const CLOCK='<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>';
+
+function currentSteps(t){return t==='am'?amSteps(dow):pmSteps(NIGHT_BY_DOW[dow]);}
+
+function render(){
+  stopAll();
+  checked=load(tab);
+  const m=META[NIGHT_BY_DOW[dow]];
+  $('dateLine').textContent=(dow===todayDow?'Today · ':'Preview · ')+DAYS[dow];
+  const pill=$('nightPill'); pill.className='night-pill '+m.cls; pill.textContent=m.name+' · '+m.purpose;
+  const pn=$('previewNote');
+  if(dow!==todayDow){pn.hidden=false; pn.innerHTML='You’re looking at '+DAYS[dow]+'. <button type="button" id="backToday">Back to today</button>'; $('backToday').onclick=()=>{dow=todayDow;render();};}
+  else pn.hidden=true;
+  $('tabAm').setAttribute('aria-pressed',tab==='am'); $('tabPm').setAttribute('aria-pressed',tab==='pm');
+  $('banner').innerHTML= tab==='am' ? '<b>Every morning:</b> protect and hydrate. Thin to thick, SPF last.' : '<b>'+m.name+' · '+m.purpose+'.</b> '+esc(m.blurb);
+  const steps=currentSteps(tab);
+  $('steps').innerHTML=steps.map((s,i)=>{
+    const id='c-'+tab+'-'+i;
+    return '<li class="step" data-i="'+i+'">'+
+      '<input type="checkbox" id="'+id+'">'+
+      '<label class="box" for="'+id+'">'+CHECK+'<span class="sr" hidden>Done</span></label>'+
+      '<div class="content">'+
+        '<div class="title-row"><label class="name" for="'+id+'">'+esc(s.name)+(s.optional?'<span class="opt">Optional</span>':'')+'</label><span class="purpose">'+esc(s.purpose)+'</span></div>'+
+        (s.cond?'<p class="cond">'+esc(s.cond)+'</p>':'')+
+        '<p class="how">'+esc(s.how)+'</p>'+
+        (s.tip?'<div class="tip"><b>Tip</b>'+esc(s.tip)+'</div>':'')+
+        (s.timer?'<div class="timer" id="t-'+id+'">'+CLOCK+'<span class="tt">'+fmt(s.timer)+' timer starts when you check this</span></div>':'')+
+      '</div></li>';
+  }).join('');
+  steps.forEach((s,i)=>{
+    const id='c-'+tab+'-'+i; const cb=$(id);
+    cb.checked=checked.has(i);
+    cb.closest('.step').classList.toggle('done',cb.checked);
+    if(s.timer && cb.checked) setTimerText(id,'done');
+    cb.addEventListener('change',()=>{
+      ensureAudio();
+      cb.closest('.step').classList.toggle('done',cb.checked);
+      if(cb.checked){checked.add(i); if(s.timer) startTimer(id,s.timer,s.timerLabel||s.name);}
+      else {checked.delete(i); if(s.timer){stopTimer(id); setTimerText(id,'idle',s.timer);}}
+      save(); updateProgress();
+    });
+  });
+  updateProgress();
+  renderWeek();
+}
+
+function updateProgress(){
+  const steps=currentSteps(tab);
+  const req=steps.map((s,i)=>i).filter(i=>!steps[i].optional);
+  const done=req.filter(i=>checked.has(i)).length;
+  $('barFill').style.width=(req.length?done/req.length*100:0)+'%';
+  $('progressText').textContent=done===req.length?'All done':done+' of '+req.length+' done';
+  ['am','pm'].forEach(t=>{
+    const st=currentSteps(t); const set=t===tab?checked:load(t);
+    const r=st.map((s,i)=>i).filter(i=>!st[i].optional);
+    $(t==='am'?'amCount':'pmCount').textContent=r.filter(i=>set.has(i)).length+' of '+r.length;
+  });
+}
+
+function setTimerText(id,state,secs){
+  const el=$('t-'+id); if(!el) return;
+  el.className='timer'+(state==='running'?' running':state==='done'?' finished':'');
+  if(state==='idle') el.innerHTML=CLOCK+'<span class="tt">'+fmt(secs)+' timer starts when you check this</span>';
+  if(state==='done') el.innerHTML=CLOCK+'<span class="tt">Time’s up. On to the next step.</span>';
+}
+function startTimer(id,secs,label){
+  stopTimer(id);
+  timers[id]={end:Date.now()+secs*1000,total:secs,label:label};
+  const el=$('t-'+id);
+  el.className='timer running';
+  el.innerHTML=CLOCK+'<span class="tt"></span><span class="ring"><i></i></span><button type="button">Stop</button>';
+  el.querySelector('button').onclick=()=>{stopTimer(id); setTimerText(id,'idle',secs);};
+  requestWake(); tick();
+}
+function stopTimer(id){ delete timers[id]; tick(); }
+function stopAll(){ Object.keys(timers).forEach(k=>delete timers[k]); tick(); }
+function tick(){
+  const ids=Object.keys(timers); let soonest=null;
+  ids.forEach(id=>{
+    const t=timers[id]; const left=(t.end-Date.now())/1000; const el=$('t-'+id);
+    if(left<=0){ delete timers[id]; setTimerText(id,'done'); chime(); return; }
+    if(el){ const tt=el.querySelector('.tt'); if(tt) tt.textContent=fmt(left)+' left'; const r=el.querySelector('.ring i'); if(r) r.style.width=((1-left/t.total)*100)+'%'; }
+    if(!soonest||left<soonest.left) soonest={id:id,left:left,label:t.label};
+  });
+  const f=$('float');
+  if(soonest){ f.hidden=false; $('floatTime').textContent=fmt(soonest.left); $('floatLabel').textContent=soonest.label; f.dataset.id=soonest.id; }
+  else { f.hidden=true; releaseWake(); }
+}
+setInterval(tick,250);
+$('floatStop').onclick=()=>{const id=$('float').dataset.id; if(id&&timers[id]){const total=timers[id].total; stopTimer(id); setTimerText(id,'idle',total);}};
+
+let actx=null, bell=null, bellReady=false;
+function makeBell(){
+  const rate=22050, n=Math.floor(rate*1.4), dv=new DataView(new ArrayBuffer(44+n*2));
+  const w=(o,s)=>{for(let i=0;i<s.length;i++) dv.setUint8(o+i,s.charCodeAt(i));};
+  w(0,'RIFF'); dv.setUint32(4,36+n*2,true); w(8,'WAVE'); w(12,'fmt '); dv.setUint32(16,16,true); dv.setUint16(20,1,true); dv.setUint16(22,1,true);
+  dv.setUint32(24,rate,true); dv.setUint32(28,rate*2,true); dv.setUint16(32,2,true); dv.setUint16(34,16,true); w(36,'data'); dv.setUint32(40,n*2,true);
+  const notes=[[784,0],[988,0.22],[1175,0.44]];
+  for(let i=0;i<n;i++){ const t=i/rate; let v=0;
+    notes.forEach(([f,s])=>{ if(t>=s){ const d=t-s; v+=Math.sin(2*Math.PI*f*d)*Math.exp(-d*4)*Math.min(1,d/0.01); } });
+    dv.setInt16(44+i*2, Math.max(-1,Math.min(1,v*0.35))*32767, true); }
+  return URL.createObjectURL(new Blob([dv],{type:'audio/wav'}));
+}
+function ensureAudio(){
+  // "playback" lets iPhone sound play with the silent switch on (iOS 17+).
+  try{ if(navigator.audioSession) navigator.audioSession.type='playback'; }catch(e){}
+  // A media element plays through the silent switch on older iOS too; unlock it silently on this tap.
+  try{ if(!bell){ bell=new Audio(makeBell()); bell.preload='auto'; bell.setAttribute('playsinline',''); }
+    if(!bellReady){ bell.muted=true; const p=bell.play(); const ok=()=>{ bell.pause(); bell.currentTime=0; bell.muted=false; bellReady=true; };
+      if(p&&p.then) p.then(ok).catch(()=>{ bell.muted=false; }); else ok(); } }catch(e){}
+  try{if(!actx){const C=window.AudioContext||window.webkitAudioContext; if(C) actx=new C();} if(actx&&actx.state==='suspended') actx.resume();}catch(e){}
+}
+function chime(){
+  let played=false;
+  try{ if(bell&&bellReady){ bell.currentTime=0; const p=bell.play(); played=true; if(p&&p.catch) p.catch(webChime); } }catch(e){ played=false; }
+  if(!played) webChime();
+}
+function webChime(){
+  try{ if(actx){ const t0=actx.currentTime; [784,988,1175].forEach((f,i)=>{const o=actx.createOscillator(),g=actx.createGain(); o.type='sine'; o.frequency.value=f; const t=t0+i*0.22; g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.3,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+0.7); o.connect(g); g.connect(actx.destination); o.start(t); o.stop(t+0.75);}); } }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([200,100,200]); }catch(e){}
+}
+let wake=null;
+async function requestWake(){try{if(!wake&&navigator.wakeLock){wake=await navigator.wakeLock.request('screen'); wake.addEventListener('release',()=>{wake=null;});}}catch(e){wake=null;}}
+function releaseWake(){try{if(wake){wake.release(); wake=null;}}catch(e){}}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Object.keys(timers).length) requestWake();});
+
+$('tabAm').onclick=()=>{tab='am';render();};
+$('tabPm').onclick=()=>{tab='pm';render();};
+$('resetBtn').onclick=()=>{checked=new Set(); save(); render();};
+$('testChime').onclick=()=>{ ensureAudio(); setTimeout(chime,300); };
+
+function renderWeek(){
+  $('week').innerHTML=[1,2,3,4,5,6,0].map(d=>{const m=META[NIGHT_BY_DOW[d]]; const nm=m.name.split(' ')[0];
+    return '<button type="button" class="day '+m.cls+(d===dow?' sel':'')+'" data-d="'+d+'" aria-label="'+DAYS[d]+': '+m.name+'"><b>'+SHORT[d]+'</b><span>'+nm+'</span></button>';}).join('');
+  $('week').querySelectorAll('.day').forEach(b=>b.onclick=()=>{dow=+b.dataset.d; render(); window.scrollTo({top:0,behavior:'smooth'});});
+}
+
+function renderCards(){
+  const li=s=>'<li>'+esc(s.name)+(s.cond?' · <span class="cond">'+esc(s.cond)+'</span>':'')+'</li>';
+  const am='<article class="card wide"><div class="card-head am-head"><h3>Morning</h3><small>Every day · Protect + hydrate</small></div><ol>'+
+    [S.splash,S.vitc,Object.assign({},S.tor_am,{cond:'Mon, Wed, Fri, Sun; add on dry days'}),Object.assign({},S.res_am,{cond:'Tue, Thu, Sat; add on dry days'}),S.vichy,S.heve,S.lrp,S.striv].map(li).join('')+
+    '<li>Vinopure toner · <span class="cond">Tue or Fri, nose only, if filaments flare and skin isn’t dry</span></li></ol></article>';
+  const days={tret:'Mon · Thu · Sat',bha:'Wed',recover:'Tue · Fri',reset:'Sun'};
+  const nights=['tret','bha','recover','reset'].map(t=>{const m=META[t];
+    return '<article class="card"><div class="card-head '+m.cls+'"><h3>'+m.name+' · '+m.purpose+'</h3><small>'+days[t]+'</small></div><p class="blurb">'+esc(m.blurb)+'</p><ol>'+pmSteps(t).map(li).join('')+'</ol></article>';}).join('');
+  const monthly='<article class="card wide monthly"><div class="card-head" style="padding-bottom:0"><h3 style="color:var(--ink-green)">Monthly check-in</h3></div><ul>'+
+    '<li><span class="cond">Still dry after a month?</span> Tretinoin 2 nights; make Saturday a Recover night.</li>'+
+    '<li><span class="cond">Filaments persist, skin comfortable?</span> Make Friday a second BHA night.</li>'+
+    '<li><span class="cond">Stinging, redness or peeling?</span> Recover nights only until it calms.</li>'+
+    '<li>Add one new product per week, oil included.</li>'+
+    '<li>Never tretinoin, salicylic acid and the scrub on the same night.</li>'+
+    '<li>Caudalie allows the mask and scrub up to twice a week; stay at once while skin is dry.</li></ul></article>';
+  $('cards').innerHTML=am+nights+monthly;
+}
+
+renderCards();
+render();
+})();
+</script>
+
+</body>
+</html>
